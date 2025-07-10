@@ -10,7 +10,6 @@ CLI tool to inspect PDFs for:
 
 ## Usage
 
-```bash
 python analyze.py path/to/folder_or_file -o report.txt
 
 
