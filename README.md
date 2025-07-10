@@ -12,3 +12,6 @@ CLI tool to inspect PDFs for:
 ```bash
 conda env create -f environment.yml
 conda activate pdfenv
+
+## Usage
+python analyze.py path/to/folder_or_file -o report.txt
