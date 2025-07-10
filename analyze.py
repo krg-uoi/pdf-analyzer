@@ -7,8 +7,8 @@ import argparse
 
 def analyze(pdf_path):
     """
-    Analyze a single PDF for word count, figure captions, embedded images,
-    GitHub links, and references via DOI text and link annotations.
+    Analyze PDFs for word count, figure captions, embedded images,
+    GitHub links, and references.
     """
     doc = fitz.open(pdf_path)
     raw_text = ""
@@ -16,38 +16,37 @@ def analyze(pdf_path):
     doi_set = set()
 
     for page in doc:
-        # extract text and count images
         page_text = page.get_text() or ""
         raw_text += page_text
         image_count += len(page.get_images(full=True))
-        # extract link annotations for DOIs
+        # DOIs
         for link in page.get_links():
             uri = link.get('uri', '')
             if uri and 'doi.org' in uri.lower():
                 doi_set.add(uri)
 
-    # Normalize whitespace for URL detection
+    # Stubborn GitHub detection
     text = re.sub(r"\s+", " ", raw_text)
     text = re.sub(r"(https?://github\.com/) ", r"\1", text, flags=re.IGNORECASE)
 
-    # Word count
+    # Words count
     words = len(text.split())
 
-    # Figure captions
+    # Figs captions
     figure_labels = re.findall(r'Figure\s+(\d+)', text, flags=re.IGNORECASE)
     distinct_figs = sorted(set(figure_labels), key=int)
 
     # GitHub links
     github_links = re.findall(r'https?://github\.com/[\w\-\./]+', text, flags=re.IGNORECASE)
 
-    # Reference count: union of DOI mentions in text and annotations
+    # References (via DOIs; still not that suceessful)
     reference_count = 0
-    # text-based DOIs after References heading
+    # text-based DOIs after Refs
     ref_start = re.search(r'^\s*References\s*$', raw_text, flags=re.IGNORECASE | re.MULTILINE)
     if ref_start:
         section = raw_text[ref_start.end():]
         doi_text = set(re.findall(r'doi\.org/[\w\./-]+', section, flags=re.IGNORECASE))
-        # prefix with https if missing
+        # if https is missing
         doi_text = {('https://' + doi) if not doi.lower().startswith('http') else doi for doi in doi_text}
         doi_set.update(doi_text)
     reference_count = len(doi_set)
