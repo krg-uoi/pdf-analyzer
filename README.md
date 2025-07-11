@@ -10,7 +10,7 @@ CLI tool to inspect PDFs for:
 
 ## Usage
 
-python analyze.py path/to/folder_or_file -o report.txt
+python analyze.py path/to/folder_with_PDFs -o report.txt
 
 
 ## Installation (Conda)
