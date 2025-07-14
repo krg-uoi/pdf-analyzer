@@ -9,7 +9,7 @@ CLI tool to inspect PDFs for:
 
 
 ## Usage
-
+```bash
 python analyze.py path/to/folder_with_PDFs -o report.txt
 
 For windows users: Run the run.bat file located in the same folder as analyze.py, and make sure your PDFs are placed in the pdf_folder subfolder.
