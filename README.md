@@ -27,7 +27,6 @@ Run the `run.bat` file located in the same folder as `analyze.py`, and make sure
 project_root/
 ├── analyze.py
 ├── run.bat
-├── environment.yml
 └── pdf_folder/
     ├── document1.pdf
     ├── document2.pdf
